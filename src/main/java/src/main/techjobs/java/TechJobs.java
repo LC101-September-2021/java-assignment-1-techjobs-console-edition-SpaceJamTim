@@ -1,3 +1,5 @@
+package src.main.techjobs.java;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,12 +34,8 @@ public class TechJobs {
 
             String actionChoice = getUserSelection("View jobs by (type 'x' to quit):", actionChoices);
 
-            if (actionChoice == null) {
-                break;
-            } else if (actionChoice.equals("list")) {
-
+            if (actionChoice.equals("list")) {
                 String columnChoice = getUserSelection("List", columnChoices);
-
                 if (columnChoice.equals("all")) {
                     printJobs(JobData.findAll());
                 } else {
@@ -59,7 +57,7 @@ public class TechJobs {
 
                 // What is their search term?
                 System.out.println("\nSearch term:");
-                String searchTerm = in.nextLine();
+                String searchTerm = in.nextLine().toLowerCase();
 
                 if (searchField.equals("all")) {
                     printJobs(JobData.findByValue(searchTerm));
@@ -73,8 +71,8 @@ public class TechJobs {
     // ﻿Returns the key of the selected item from the choices Dictionary
     private static String getUserSelection(String menuHeader, HashMap<String, String> choices) {
 
-        int choiceIdx = -1;
-        Boolean validChoice = false;
+        int choiceIdx;
+        boolean validChoice = false;
         String[] choiceKeys = new String[choices.size()];
 
         // Put the choices in an ordered structure so we can
@@ -93,6 +91,8 @@ public class TechJobs {
             for (int j = 0; j < choiceKeys.length; j++) {
                 System.out.println("" + j + " - " + choices.get(choiceKeys[j]));
             }
+            choiceIdx = in.nextInt();
+            in.nextLine();
 
             if (in.hasNextInt()) {
                 choiceIdx = in.nextInt();
@@ -119,7 +119,15 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
-
-        System.out.println("printJobs is not implemented yet");
+        if(someJobs.size() == 0) {
+            System.out.println("Your search returned no results.");
+        }
+        for(HashMap<String,String> job : someJobs) {
+            System.out.println("*****");
+            for(Map.Entry<String,String> dataKeys : job.entrySet()){
+                System.out.println(dataKeys.getKey() + ": " + dataKeys.getValue());
+            }
+            System.out.println("*****\n");
+        }
     }
 }
